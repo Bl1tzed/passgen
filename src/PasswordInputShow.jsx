@@ -1,25 +1,22 @@
-import TextField from '@mui/material/TextField';
-import { useState } from 'react';
-import T from 'prop-types'
+import TextField from "@mui/material/TextField";
+import { useContext } from "react";
+import T from "prop-types";
+import { PasswordContext } from "./PasswordContext";
 
-export default function PasswordInputShow({ password }) {
-
-  const [p, setP] = useState("")
-  password.current = setP;
-  
+export default function PasswordInputShow() {
+  const { password } = useContext(PasswordContext);
   return (
-    <div>
-      <TextField
-        id="outlined-read-only-input"
-        label="Password"
-        value={p}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-    </div>)
+    <TextField
+      id="outlined-read-only-input"
+      label="Password"
+      value={password.value}
+      InputProps={{
+        readOnly: true,
+      }}
+    />
+  );
 }
 
 PasswordInputShow.propTypes = {
-  password: T.shape({current: T.func})
-}
+  password: T.shape({ current: T.func }),
+};

@@ -1,34 +1,39 @@
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import T from 'prop-types'
+import Button from "@mui/material/Button";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import T from "prop-types";
+import { useContext } from "react";
+import { PasswordContext } from "./PasswordContext";
 
-export default function ButtonGroupShow({ password, passwordArrayLocal }) {
-  return (<>
-    <ButtonGroup variant="contained" aria-label="contained button group">
-      <Button
-        onClick={() => generatePassword(password, passwordArrayLocal)}
-        id="copyBtn">
-        Generate
-      </Button>
-      <Button
-        onClick={() => {
-          const passwordInput = document.getElementById("outlined-read-only-input").value
-          navigator.clipboard.writeText(passwordInput)
-        }
-        }
-        id="copyBtn">
-        Copy
-      </Button>
-    </ButtonGroup>
-  </>)
+export default function ButtonGroupShow({ passwordArrayLocal }) {
+  const { password, setPassword } = useContext(PasswordContext);
+  return (
+    <>
+      <ButtonGroup variant="contained" aria-label="contained button group">
+        <Button
+          onClick={() => generatePassword(passwordArrayLocal, setPassword)}
+          className="copyBtn"
+        >
+          Generate
+        </Button>
+        <Button
+          onClick={() => {
+            navigator.clipboard.writeText(password.value);
+          }}
+          className="copyBtn"
+        >
+          Copy
+        </Button>
+      </ButtonGroup>
+    </>
+  );
 }
 
 ButtonGroupShow.propTypes = {
-  password: T.shape({current: T.func}),
-  passwordArrayLocal: T.shape({current: T.func}),
-}
+  password: T.shape({ current: T.func }),
+  passwordArrayLocal: T.shape({ current: T.func }),
+};
 
-function generatePassword(password, passwordArrayLocal) {
+function generatePassword(passwordArrayLocal, setPassword) {
   const defaultCharsString = "abcdefghijklnopqrstuvwxyz";
   const charsRegisterString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   const numbersString = "1234567890";
@@ -37,30 +42,33 @@ function generatePassword(password, passwordArrayLocal) {
   let newPassword = "";
   let passwordChars = "";
 
-  let { defaultChars, register, numbers, special, numOfChars } = JSON.parse(localStorage.getItem('properties')) || {};
+  let { defaultChars, register, numbers, special, numOfChars } =
+    JSON.parse(localStorage.getItem("properties")) || {};
 
   if (defaultChars) passwordChars += defaultCharsString;
   if (register) passwordChars += charsRegisterString;
   if (numbers) passwordChars += numbersString;
   if (special) passwordChars += specialString;
 
-  if (passwordChars === "") { password.current("Incorrect Properties"); return }
+  if (passwordChars === "") {
+    setPassword("Incorrect Properties");
+    return;
+  }
 
   for (let i = 0; i < numOfChars; i++) {
-    newPassword += passwordChars[getRandomInt(0, passwordChars.length - 1)]
+    newPassword += passwordChars[getRandomInt(0, passwordChars.length - 1)];
   }
 
-  localStorage.setItem('password', newPassword);
-  const storage = JSON.parse(localStorage.getItem('passwordArray'));
+  localStorage.setItem("password", newPassword);
+  const storage = JSON.parse(localStorage.getItem("passwordArray"));
 
-  if (storage) {
-    localStorage.setItem('passwordArray', JSON.stringify([newPassword].concat(storage)));
-  } else {
-    localStorage.setItem('passwordArray', JSON.stringify([newPassword]))
-  }
+  localStorage.setItem(
+    "passwordArray",
+    JSON.stringify(storage ? [newPassword].concat(storage) : [newPassword])
+  );
 
-  passwordArrayLocal.current(JSON.parse(localStorage.getItem('passwordArray')));
-  password.current(newPassword);
+  passwordArrayLocal.current(storage || []);
+  setPassword({ value: newPassword });
 }
 
 function getRandomInt(min, max) {

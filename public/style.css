@@ -7,7 +7,7 @@ body {
   font: 14px "Century Gothic", Futura, sans-serif !important;
   background-color: #e5e5e5;
 }
- 
+
 h1 {
   margin: 5px;
 }
@@ -19,7 +19,6 @@ ul {
 
 .historyPassword {
   list-style-type: none;
-  
 }
 
 #firstElement {
@@ -27,8 +26,14 @@ ul {
 }
 
 @keyframes fadeInDown {
-  0% { opacity: 0; transform: translate3d(0, -70%, 0) }
-  100% { opacity: 1; transform: none;}
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -70%, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .pagination {
@@ -52,12 +57,14 @@ ul {
   align-content: center;
 }
 
-#copyBtn, #generateBtn {
+.copyBtn,
+#generateBtn {
   text-transform: none !important;
   font: 16px "Century Gothic", Futura, sans-serif !important;
 }
 
-#historyBox, #propertiesBox {
+#historyBox,
+#propertiesBox {
   background-color: white;
   width: fit-content;
   display: flex;
@@ -75,11 +82,9 @@ ul {
   min-height: 260px;
 }
 
-
 #historyBox {
   font: 16px "Century Gothic", Futura, sans-serif !important;
 }
-
 
 #passwords-list {
   text-align: center;
@@ -100,8 +105,10 @@ ul {
   margin-bottom: 10px !important;
 }
 
-#upRegisterCheckbox, #numbersCheckbox, #specialCheckbox, #defaultCharsCheckbox {
+#upRegisterCheckbox,
+#numbersCheckbox,
+#specialCheckbox,
+#defaultCharsCheckbox {
   width: 70px;
   margin: 0;
 }
-
